@@ -476,6 +476,31 @@ a { color: var(--accent); }
   border-bottom: 1px solid var(--hairline);
   box-shadow: 0 4px 12px -8px rgba(0,0,0,.1);
 }
+/* Edge fades hint that there are more categories to scroll to.
+   Right fade is on by default; toggled off when scrolled to the end.
+   Left fade is off by default; toggled on when scrolled away from start. */
+.cat-nav-wrap::before,
+.cat-nav-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 50px;
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity .25s ease;
+}
+.cat-nav-wrap::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg) 0%, var(--bg) 20%, transparent 100%);
+  opacity: 0;
+}
+.cat-nav-wrap::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg) 0%, var(--bg) 20%, transparent 100%);
+  opacity: 1;
+}
+.cat-nav-wrap.scrolled-from-start::before { opacity: 1; }
+.cat-nav-wrap.scrolled-to-end::after      { opacity: 0; }
 .cat-nav {
   display: flex;
   gap: 6px;

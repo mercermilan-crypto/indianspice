@@ -102,6 +102,35 @@
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     });
+    updateCatNavFades();
+  }
+
+  // Show/hide the left + right edge fades on the sticky category nav based on
+  // current horizontal scroll position. Tells the user "there's more here".
+  function updateCatNavFades() {
+    const wrap = catNavEl.parentElement;
+    if (!wrap) return;
+    const sl = catNavEl.scrollLeft;
+    const max = catNavEl.scrollWidth - catNavEl.clientWidth;
+    wrap.classList.toggle('scrolled-from-start', sl > 4);
+    wrap.classList.toggle('scrolled-to-end', max > 0 && (max - sl) < 4);
+  }
+  catNavEl.addEventListener('scroll', updateCatNavFades, { passive: true });
+  window.addEventListener('resize', updateCatNavFades, { passive: true });
+
+  // One-time, mobile-only scroll nudge so first-time visitors see the strip
+  // move — a clear signal that it's horizontally scrollable.
+  function nudgeCatNavOnce() {
+    const KEY = 'indianSpice_catNavNudged_v1';
+    if (window.innerWidth > 720) return;
+    try { if (localStorage.getItem(KEY) === '1') return; } catch (_) {}
+    const max = catNavEl.scrollWidth - catNavEl.clientWidth;
+    if (max <= 0) return; // nothing to scroll
+    setTimeout(() => {
+      catNavEl.scrollTo({ left: 90, behavior: 'smooth' });
+      setTimeout(() => catNavEl.scrollTo({ left: 0, behavior: 'smooth' }), 750);
+      try { localStorage.setItem(KEY, '1'); } catch (_) {}
+    }, 1400);
   }
 
   function itemHtml(item) {
@@ -327,4 +356,5 @@
   if (locSwitchEl) locSwitchEl.dataset.active = state.location;
   buildCatNav();
   render();
+  nudgeCatNavOnce();
 })();
