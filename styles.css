@@ -622,6 +622,14 @@ a { color: var(--accent); }
   animation: fadeUp .5s ease both;
   scroll-margin-top: var(--scroll-anchor-offset, 180px);
 }
+
+/* Anchor jumps (Catering, Branches, Franchising, Contact, etc.) should land
+   below the sticky header, not be hidden behind it. */
+section[id],
+main[id],
+footer[id] {
+  scroll-margin-top: var(--header-offset, 90px);
+}
 .menu-block-head { text-align: center; margin: 0 0 36px; }
 .menu-block-head .kicker {
   font-family: 'Playfair Display', serif;

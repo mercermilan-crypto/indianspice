@@ -19,16 +19,24 @@
 
   // Sync the sticky cat-nav's `top` to the actual rendered header height so
   // there's no gap between the two sticky elements on any breakpoint.
+  // Also expose two CSS vars used for anchor scroll-margins:
+  //   --header-offset         — for top-level sections (catering, locations, etc.)
+  //   --scroll-anchor-offset  — for menu-block anchors (header + cat-nav)
   function syncCatNavTop() {
     const header = document.querySelector('.site-header');
     const wrap   = document.querySelector('.cat-nav-wrap');
-    if (!header || !wrap) return;
-    wrap.style.top = header.offsetHeight + 'px';
-    // Match the menu-block scroll-margin-top so anchor jumps land flush
-    document.documentElement.style.setProperty(
-      '--scroll-anchor-offset',
-      (header.offsetHeight + wrap.offsetHeight + 12) + 'px'
-    );
+    if (header) {
+      document.documentElement.style.setProperty(
+        '--header-offset', header.offsetHeight + 'px'
+      );
+    }
+    if (header && wrap) {
+      wrap.style.top = header.offsetHeight + 'px';
+      document.documentElement.style.setProperty(
+        '--scroll-anchor-offset',
+        (header.offsetHeight + wrap.offsetHeight + 12) + 'px'
+      );
+    }
   }
   window.addEventListener('resize', syncCatNavTop, { passive: true });
   window.addEventListener('load', syncCatNavTop);
@@ -246,9 +254,21 @@
         const isActive = button.dataset.target === activeId;
         button.classList.toggle('active', isActive);
         if (isActive) {
-          button.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+          // Horizontal-only centering of the active pill inside the cat-nav.
+          // Using scrollIntoView here can cause the *page* to scroll vertically
+          // when the cat-nav is off-screen, fighting any anchor scroll the user
+          // just kicked off (e.g. jumping from hero → catering).
+          centerCatLink(button);
         }
       });
+    }
+    function centerCatLink(button) {
+      const wrapRect = catNavEl.getBoundingClientRect();
+      const btnRect  = button.getBoundingClientRect();
+      const delta = (btnRect.left + btnRect.width / 2) - (wrapRect.left + wrapRect.width / 2);
+      if (Math.abs(delta) > 4) {
+        catNavEl.scrollBy({ left: delta, behavior: 'smooth' });
+      }
     }
 
     let ticking = false;
