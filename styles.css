@@ -1,20 +1,25 @@
 :root {
-  --bg: #fbf6ed;
-  --surface: #ffffff;
-  --ink: #1c120a;
-  --ink-soft: #6b5a48;
-  --ink-mute: #9c8a76;
-  --primary: #e87722;
-  --primary-dark: #b85e15;
-  --accent: #8a1f15;
-  --gold: #c89b3a;
-  --gold-soft: #f0e0bd;
-  --cream: #f5ecd9;
-  --border: #ead9bd;
-  --hairline: #e6d6b8;
-  --shadow-sm: 0 1px 3px rgba(60,30,10,.05);
-  --shadow-md: 0 10px 30px rgba(60,30,10,.10);
-  --shadow-lg: 0 24px 60px rgba(60,30,10,.18);
+  /* Dark theme — warm, luxe Indian restaurant feel.
+     The brand orange/red/gold are kept; the surfaces flip to deep warm browns. */
+  --bg: #100905;             /* page background — near-black with a warm tint */
+  --surface: #1a1209;        /* card / header / panel surface */
+  --surface-2: #241810;      /* slightly elevated surface (chips, inputs) */
+  --ink: #f5e6c4;            /* primary text — warm cream */
+  --ink-soft: #b8a482;       /* secondary text — muted warm beige */
+  --ink-mute: #7c6b52;       /* tertiary text — muted brown */
+  --primary: #ee8a2e;        /* turmeric orange — brighter for dark bg */
+  --primary-dark: #d97318;
+  --accent: #d63a2a;         /* tandoor red — brighter for dark bg */
+  --gold: #e0b048;           /* gold accent */
+  --gold-soft: #f0d8a0;      /* LIGHT gold — used as text on dark surfaces (footer, topbar) */
+  --gold-glow: #2e2210;      /* dark gold-tinted backdrop (for hover/active states) */
+  --cream: #1f1408;          /* "cream" backgrounds now dark (chips, inputs) */
+  --border: #34291a;         /* subtle borders */
+  --hairline: #2a2010;       /* dividers */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.5);
+  --shadow-md: 0 10px 30px rgba(0,0,0,.55);
+  --shadow-lg: 0 24px 60px rgba(0,0,0,.7);
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -33,12 +38,13 @@ a { color: var(--accent); }
 
 /* =================== TOP BAR =================== */
 .topbar {
-  background: var(--ink);
+  background: #060300;             /* near-black ribbon, even darker than the page */
   color: var(--gold-soft);
   font-size: 12.5px;
   padding: 9px 24px;
   text-align: center;
   letter-spacing: .04em;
+  border-bottom: 1px solid var(--border);
 }
 .topbar a { color: var(--gold); text-decoration: none; font-weight: 600; }
 .topbar a:hover { text-decoration: underline; }
@@ -496,7 +502,12 @@ a { color: var(--accent); }
   transition: all .25s ease;
 }
 .cat-link:hover { border-color: var(--primary); color: var(--primary-dark); }
-.cat-link.active { background: var(--ink); border-color: var(--ink); color: var(--gold); }
+.cat-link.active {
+  background: linear-gradient(135deg, var(--gold) 0%, #b8893a 100%);
+  border-color: var(--gold);
+  color: var(--bg);
+  box-shadow: 0 4px 14px rgba(224,176,72,.25);
+}
 
 /* Search & filters */
 .controls {
@@ -531,8 +542,8 @@ a { color: var(--accent); }
 #search:focus {
   outline: none;
   border-color: var(--primary);
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(232,119,34,.12);
+  background: var(--surface-2);
+  box-shadow: 0 0 0 3px rgba(238,138,46,.18);
 }
 .clear-btn {
   position: absolute; right: 8px; top: 50%;
@@ -562,9 +573,13 @@ a { color: var(--accent); }
   letter-spacing: .03em;
   text-transform: uppercase;
 }
-.chip:hover { background: var(--gold-soft); }
+.chip:hover { background: var(--surface-2); }
 .chip input { accent-color: var(--accent); margin: 0; }
-.chip:has(input:checked) { background: var(--gold-soft); color: var(--accent); border-color: var(--gold); }
+.chip:has(input:checked) {
+  background: var(--gold-glow);
+  color: var(--gold);
+  border-color: var(--gold);
+}
 
 .result-count {
   width: 100%;
@@ -646,9 +661,9 @@ a { color: var(--accent); }
   padding: 3px 8px; border-radius: 2px;
   letter-spacing: .12em; text-transform: uppercase;
 }
-.tag.veg     { background: #e6f1e1; color: #356b2a; }
-.tag.spicy   { background: #fde0dd; color: var(--accent); }
-.tag.popular { background: var(--gold-soft); color: #6b4a08; }
+.tag.veg     { background: #1d3a1f; color: #8ed87a; }
+.tag.spicy   { background: #3a1812; color: #ff8b78; }
+.tag.popular { background: #3a2810; color: var(--gold); }
 
 /* Feature band */
 .feature-band {
@@ -882,9 +897,9 @@ a { color: var(--accent); }
   position: fixed;
   bottom: 24px; right: 24px;
   width: 46px; height: 46px;
-  background: var(--ink);
+  background: var(--surface);
   color: var(--gold);
-  border: none;
+  border: 1px solid var(--gold);
   border-radius: 50%;
   cursor: pointer;
   box-shadow: var(--shadow-md);
@@ -1013,7 +1028,7 @@ a { color: var(--accent); }
     position: absolute;
     top: 100%;
     left: 0; right: 0;
-    background: #fff;
+    background: var(--surface);
     display: flex;
     flex-direction: column;
     align-items: stretch;
