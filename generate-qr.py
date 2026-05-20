@@ -11,7 +11,7 @@ import qrcode
 from qrcode.constants import ERROR_CORRECT_H
 from PIL import Image
 
-URL = "https://mercermilan-crypto.github.io/indianspice/"
+URL = "https://mercermilan-crypto.github.io/indianspice/#menu"
 LOGO_URL = "https://indianspice.ca/wp-content/uploads/2023/10/PNG-C-1536x1018-1-170x113-1.png"
 
 # ---------- 1. Clean QR ----------
