@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Indian Spice — Scan to Menu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1c120a;
+      --accent: #8a1f15;
+      --gold: #c89b3a;
+      --cream: #fbf6ed;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: #d8cba8; font-family: 'Poppins', sans-serif; color: var(--ink); }
+
+    /* ----- On-screen toolbar (hidden when printing) ----- */
+    .toolbar {
+      position: fixed;
+      top: 20px; right: 20px;
+      display: flex; gap: 10px;
+      z-index: 100;
+    }
+    .toolbar button {
+      padding: 10px 20px;
+      background: var(--ink);
+      color: var(--gold);
+      border: none;
+      border-radius: 4px;
+      font-family: inherit;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-size: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0,0,0,.2);
+    }
+    .toolbar button:hover { background: var(--accent); color: #fff; }
+
+    /* ----- The actual tent card ----- */
+    .page {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    .card {
+      width: 100%;
+      max-width: 520px;
+      aspect-ratio: 4 / 6;
+      background: var(--cream);
+      border: 2px solid var(--gold);
+      border-radius: 12px;
+      padding: 44px 36px 40px;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(0,0,0,.15);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Decorative top/bottom band */
+    .card::before, .card::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      height: 12px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--gold) 0 14px,
+        transparent 14px 28px
+      );
+      opacity: .5;
+    }
+    .card::before { top: 18px; }
+    .card::after  { bottom: 18px; }
+
+    .logo {
+      width: 130px;
+      margin: 8px auto 14px;
+      display: block;
+    }
+    .brand-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 4px;
+      letter-spacing: -.01em;
+    }
+    .brand-name .accent { color: var(--accent); font-style: italic; font-weight: 700; }
+    .tagline {
+      font-size: 11px;
+      letter-spacing: .35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+    .divider {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--gold);
+      font-size: 14px;
+      margin-bottom: 22px;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      width: 48px; height: 1px;
+      background: var(--gold);
+      opacity: .6;
+    }
+
+    .qr-wrap {
+      background: #fff;
+      padding: 16px;
+      border-radius: 8px;
+      display: inline-block;
+      margin: 0 auto 22px;
+      box-shadow: 0 4px 14px rgba(0,0,0,.08);
+    }
+    .qr-wrap img { display: block; width: 240px; height: 240px; }
+
+    .cta {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .scan-instruction {
+      font-size: 12px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--ink);
+      opacity: .7;
+      margin-bottom: auto;
+    }
+
+    .footer {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px dashed var(--gold);
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--ink);
+      opacity: .75;
+    }
+    .footer strong { color: var(--accent); font-weight: 700; }
+
+    /* ----- Print rules ----- */
+    @media print {
+      @page { size: A6 portrait; margin: 0; }
+      html, body { background: #fff; }
+      .toolbar { display: none !important; }
+      .page { min-height: auto; padding: 0; }
+      .card {
+        max-width: 100%;
+        aspect-ratio: auto;
+        height: 100vh;
+        width: 100vw;
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+        padding: 30px 26px 24px;
+      }
+      .qr-wrap img { width: 220px; height: 220px; }
+      .brand-name { font-size: 30px; }
+      .logo { width: 100px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <button onclick="window.print()">Print</button>
+    <button onclick="location.href='index.html'">Back to site</button>
+  </div>
+
+  <div class="page">
+    <div class="card">
+      <img class="logo" src="https://indianspice.ca/wp-content/uploads/2023/10/PNG-C-1536x1018-1-170x113-1.png" alt="Indian Spice logo" />
+      <h1 class="brand-name">Indian <span class="accent">Spice</span></h1>
+      <p class="tagline">Authentic Indian Cuisine</p>
+      <div class="divider">✦</div>
+
+      <div class="qr-wrap">
+        <img src="qr-branded.png" alt="QR code linking to the menu" />
+      </div>
+
+      <p class="cta">Scan to view our menu</p>
+      <p class="scan-instruction">Point your camera at the code</p>
+
+      <div class="footer">
+        <strong>Hamilton</strong> • 647 Upper James St &nbsp;|&nbsp;
+        <strong>Waterloo</strong> • 373 Bridge St W
+      </div>
+    </div>
+  </div>
+</body>
+</html>
